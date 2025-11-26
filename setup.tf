@@ -2,6 +2,7 @@ provider "aws" {
   region = "us-east-1"
   access_key = ""
   secret_key = ""
+  token = ""
 }
 
 data "aws_ami" "ubuntu" {
@@ -15,47 +16,39 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_instance" "gitlab_server" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
+resource "aws_vpc" "clcom-vpc" {
+  cidr_block = "10.0.0.0/24"
+  instance_tenancy = "default"
 
   tags = {
-    Name = "gitlab-server"
+    Name = "clcom-vpc"
   }
 }
 
-resource "aws_instance" "gitlab_runner" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
+resource "aws_subnet" "clcom-subnet" {
+  vpc_id = aws_vpc.clcom-vpc.id
+  cidr_block = "10.0.0.0/24"
+
+  map_public_ip_on_launch = true
 
   tags = {
-    Name = "gitlab-runner"
+    Name = "clcom-subnet"
   }
 }
 
-resource "aws_instance" "ldap_server" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "ldap-server"
-  }
+resource "aws_internet_gateway" "clcom-igw" {
+  vpc_id = aws_vpc.clcom-vpc.id
 }
 
-resource "aws_instance" "primary_dns" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
+resource "aws_route_table" "clcom-route" {
+  vpc_id = aws_vpc.clcom-vpc.id
 
-  tags = {
-    Name = "primary-dns"
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.clcom-igw.id
   }
-}
-
-resource "aws_instance" "secondary_dns" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
 
   tags = {
-    Name = "secondary-dns"
+    Name = "clcom-route" 
   }
 }
