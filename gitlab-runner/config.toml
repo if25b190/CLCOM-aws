@@ -1,0 +1,25 @@
+#max number of jobs than can run simultaneously
+concurrent = 10
+
+[[runners]]
+  name = "gitlab-runner"
+  limit = 5
+  request_concurrency = 1
+  #Sec how often the runner asks for jobs
+  check_interval = 10
+  url = "https://gitlab.com/"
+  #Auth Token for regsitering the runner. Will be later set
+  token = "token"
+  executor = "docker"
+  [runners.docker]
+    #Image to run jobs with
+    image = "ubuntu:latest"
+    #Container runs in privileged mode. Unsecure therefore false.
+    privileged = false
+    volumes = [
+        "/var/run/docker.sock:/var/run/docker.sock", #For Docker Executor
+        "/cache" #For local cache
+        ]
+  [runners.cache]
+    #S3 is Amazon S3 Protocollstandard
+    type = "s3" # Beispiel für Cache-Konfiguration

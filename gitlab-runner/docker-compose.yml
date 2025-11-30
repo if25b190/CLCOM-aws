@@ -1,0 +1,16 @@
+services:
+  gitlab-runner:
+    image: gitlab/gitlab-runner:latest
+    restart: always
+    hostname: gitlab-runner
+    container-name: gitlab-runner
+    volumes:
+      #For config.toml
+      - /srv/gitlab-runner/config:/etc/gitlab-runner
+      # Mounts the host docker socket to the socket of the container.
+      # Needed for docker executor
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - CI_SERVER_URL=http://gitlab.server.url
+      - DOCKER-IMAGE=ubuntu:latest
+      - DOCKER_PRIVILEGE=true
