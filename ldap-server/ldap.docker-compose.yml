@@ -1,0 +1,23 @@
+services:
+  ldap:
+    image: osixia/openldap:1.5.0
+    command: --copy-service --loglevel info
+    container_name: ldap
+    hostname: 'ldap.nextgen.com'
+    environment:
+      - LDAP_ORGANISATION="Nextgen"
+      - LDAP_DOMAIN=nextgen.technikum-wien.at
+      - LDAP_BASE_DN=dc=nextgen,dc=technikum-wien,dc=at
+      - LDAP_READONLY_USER=true
+      - LDAP_READONLY_USER_USERNAME=user
+      - LDAP_READONLY_USER_PASSWORD=user
+    ports:
+      - '389:389'
+      - '636:636'
+    volumes:
+      # TODO diese zu Paths auf dem Server mappen?
+      # - /var/lib/ldap
+      # - /etc/ldap/slapd.d
+      # TODO Custom TLS-Cert?
+      # - /container/service/slapd/assets/certs/
+      - ./gitlab-admin.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-gitlab-admin.ldif
