@@ -7,12 +7,12 @@ resource "aws_security_group" "primary_dns_security" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "pdns_allow_tls_ipv6" {
+resource "aws_vpc_security_group_ingress_rule" "pdns_allow_ssh" {
   security_group_id = aws_security_group.primary_dns_security.id
   cidr_ipv4 = "0.0.0.0/0"
-  from_port = 443
+  from_port = 22
   ip_protocol = "tcp"
-  to_port = 443
+  to_port = 22
 }
 
 resource "aws_vpc_security_group_egress_rule" "pdns_allow_all_traffic_ipv4" {
@@ -28,6 +28,8 @@ resource "aws_instance" "primary_dns" {
   private_ip = "10.0.0.254"
   vpc_security_group_ids = [aws_security_group.primary_dns_security.id]
   subnet_id = aws_subnet.clcom-subnet.id
+
+  key_name = aws_key_pair.labuser.key_name
 
   tags = {
     Name = "primary-dns"

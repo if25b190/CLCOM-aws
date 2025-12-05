@@ -2,7 +2,12 @@ provider "aws" {
   region = "us-east-1"
   access_key = ""
   secret_key = ""
-  token = ""
+  token = ""  
+}
+
+resource "aws_key_pair" "labuser" {
+  key_name = "ssh-labuser-key"
+  public_key = "" // extract public key with "ssh-keygen -f labsuser.pem -y >> public_key.txt"
 }
 
 data "aws_ami" "ubuntu" {
@@ -51,4 +56,9 @@ resource "aws_route_table" "clcom-route" {
   tags = {
     Name = "clcom-route" 
   }
+}
+
+resource "aws_route_table_association" "subnet_public_igw" {
+  subnet_id = aws_subnet.clcom-subnet.id
+  route_table_id = aws_route_table.clcom-route.id
 }

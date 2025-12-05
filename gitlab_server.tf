@@ -7,12 +7,12 @@ resource "aws_security_group" "gitlab_server_security" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "server_allow_tls_ipv6" {
+resource "aws_vpc_security_group_ingress_rule" "server_allow_ssh" {
   security_group_id = aws_security_group.gitlab_server_security.id
   cidr_ipv4 = "0.0.0.0/0"
-  from_port = 443
+  from_port = 22
   ip_protocol = "tcp"
-  to_port = 443
+  to_port = 22
 }
 
 resource "aws_vpc_security_group_egress_rule" "server_allow_all_traffic_ipv4" {
@@ -29,14 +29,17 @@ resource "aws_instance" "gitlab_server" {
   vpc_security_group_ids = [aws_security_group.gitlab_server_security.id]
   subnet_id = aws_subnet.clcom-subnet.id
 
+  key_name = aws_key_pair.labuser.key_name
+
   tags = {
     Name = "gitlab-server"
   }
 
   user_data = <<EOF
-apt update && apt install curl -y
-curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/if25b190/CLCOM-aws/refs/heads/main/scripts/setup_dns.sh.| sh
-curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/if25b190/CLCOM-aws/refs/heads/main/scripts/setup_docker.sh.| sh
-curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/if25b190/CLCOM-aws/refs/heads/main/gitlab-server/setup_gitlab_server.sh.| sh
+#!/bin/bash
+apt update -y && apt install curl -y
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/if25b190/CLCOM-aws/refs/heads/main/scripts/setup_docker.sh | sh
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/if25b190/CLCOM-aws/refs/heads/main/gitlab-server/setup_gitlab_server.sh | sh
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/if25b190/CLCOM-aws/refs/heads/main/scripts/setup_dns.sh | sh
 EOF
 }

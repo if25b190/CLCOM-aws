@@ -3,7 +3,7 @@ services:
     image: gitlab/gitlab-runner:latest
     restart: always
     hostname: gitlab-runner
-    container-name: gitlab-runner
+    container_name: gitlab-runner
     volumes:
       #For config.toml
       - /srv/gitlab-runner/config:/etc/gitlab-runner
