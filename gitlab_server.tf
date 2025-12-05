@@ -32,4 +32,11 @@ resource "aws_instance" "gitlab_server" {
   tags = {
     Name = "gitlab-server"
   }
+
+  user_data = <<EOF
+apt update && apt install curl -y
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/if25b190/CLCOM-aws/refs/heads/main/scripts/setup_dns.sh.| sh
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/if25b190/CLCOM-aws/refs/heads/main/scripts/setup_docker.sh.| sh
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/if25b190/CLCOM-aws/refs/heads/main/gitlab-server/setup_gitlab_server.sh.| sh
+EOF
 }

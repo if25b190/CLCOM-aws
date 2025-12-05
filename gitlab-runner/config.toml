@@ -7,7 +7,7 @@ concurrent = 10
   request_concurrency = 1
   #Sec how often the runner asks for jobs
   check_interval = 10
-  url = "https://gitlab.com/"
+  url = "https://gitlab.nextgen.com"
   #Auth Token for regsitering the runner. Will be later set
   token = "token"
   executor = "docker"
@@ -21,5 +21,5 @@ concurrent = 10
         "/cache" #For local cache
         ]
   [runners.cache]
-    #S3 is Amazon S3 Protocollstandard
+    #S3 is Amazon S3 Protocolstandard
     type = "s3" # Beispiel für Cache-Konfiguration

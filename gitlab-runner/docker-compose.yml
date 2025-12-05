@@ -11,6 +11,6 @@ services:
       # Needed for docker executor
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - CI_SERVER_URL=http://gitlab.server.url
+      - CI_SERVER_URL=https://gitlab.nextgen.com
       - DOCKER-IMAGE=ubuntu:latest
       - DOCKER_PRIVILEGE=true
