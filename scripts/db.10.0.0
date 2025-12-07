@@ -1,0 +1,14 @@
+; Datei: primary/etc/bind/db.10.0.0
+$TTL 604800
+@ IN SOA ns1.nextgen.com. admin.nextgen.com. (
+    2025120601 ; Serial
+    3600
+    1800
+    604800
+    604800 )
+;
+@ IN NS ns1.nextgen.com.
+@ IN NS ns2.nextgen.com.
+254 IN PTR ns1.nextgen.com.  ; .254 ist ns1
+253 IN PTR ns2.nextgen.com.  ; .253 ist ns2
+100 IN PTR host1.nextgen.com. ; .100 ist host1
