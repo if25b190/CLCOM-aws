@@ -1,0 +1,15 @@
+// Lokale Zone (Forward Lookup)
+zone "nextgen.com" IN {
+    type master;
+    file "/etc/bind/db.nextgen.com";
+    allow-transfer { 10.0.0.253; }; // Secondary DNS IP
+    notify yes; 
+};
+
+// Reverse-Zone (Reverse Lookup)
+zone "0.0.10.in-addr.arpa" IN {
+    type master;
+    file "/etc/bind/db.10.0.0";
+    allow-transfer { 10.0.0.253; };
+    notify yes;
+};
