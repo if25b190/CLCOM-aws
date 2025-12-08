@@ -4,12 +4,12 @@
 zone "nextgen.com" IN {
     type slave;
     masters { 10.0.0.254; }; // IP des Primary-Servers (ns1)
-    file "slaves/db.nextgen.com"; // Hier wird die Zone gespeichert
+    file "db.nextgen.com"; // Hier wird die Zone gespeichert
 };
 
 // Reverse-Zone (Reverse Lookup)
 zone "0.0.10.in-addr.arpa" IN {
     type slave;
     masters { 10.0.0.254; };
-    file "slaves/db.10.0.0";
+    file "db.10.0.0";
 };
