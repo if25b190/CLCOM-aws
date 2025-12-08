@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     environment:
       GITLAB_ROOT_EMAIL: "admin@nextgen.com"
-      GITLAB_ROOT_PASSWORD: "testadmin"
+      GITLAB_ROOT_PASSWORD: "3<2KRiDj02FW"
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://gitlab.30062022.xyz'
         nginx['listen_port'] = 80

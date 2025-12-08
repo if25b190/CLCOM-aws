@@ -113,7 +113,7 @@ resource "aws_vpc_security_group_egress_rule" "server_allow_dns_tls_out" {
 
 resource "aws_instance" "gitlab_server" {
   ami = data.aws_ami.ubuntu.id
-  instance_type = "t3.small"
+  instance_type = "t3.medium"
 
   private_ip = "10.0.0.29"
   vpc_security_group_ids = [aws_security_group.gitlab_server_security.id]
@@ -122,10 +122,6 @@ resource "aws_instance" "gitlab_server" {
   root_block_device {
     volume_size = 30 # GB
     volume_type = "gp3"
-  }
-
-  lifecycle {
-    prevent_destroy = true
   }
 
   key_name = aws_key_pair.labuser.key_name

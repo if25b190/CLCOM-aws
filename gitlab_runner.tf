@@ -72,6 +72,11 @@ resource "aws_instance" "gitlab_runner" {
   vpc_security_group_ids = [aws_security_group.gitlab_runner_security.id]
   subnet_id = aws_subnet.clcom-subnet.id
 
+  root_block_device {
+    volume_size = 20 # GB
+    volume_type = "gp3"
+  }
+
   key_name = aws_key_pair.labuser.key_name
 
   tags = {

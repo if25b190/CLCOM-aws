@@ -15,7 +15,7 @@ concurrent = 10
     #Image to run jobs with
     image = "ubuntu:latest"
     #Container runs in privileged mode. Unsecure therefore false.
-    privileged = false
+    privileged = true
     volumes = [
         "/var/run/docker.sock:/var/run/docker.sock", #For Docker Executor
         "/cache" #For local cache

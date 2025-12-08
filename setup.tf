@@ -2,7 +2,7 @@ provider "aws" {
   region = "us-east-1"
   access_key = ""
   secret_key = ""
-  token = ""  
+  token = ""
 }
 
 resource "aws_key_pair" "labuser" {
@@ -61,4 +61,9 @@ resource "aws_route_table" "clcom-route" {
 resource "aws_route_table_association" "subnet_public_igw" {
   subnet_id = aws_subnet.clcom-subnet.id
   route_table_id = aws_route_table.clcom-route.id
+}
+
+resource "aws_eip" "elastic_ip_gitlab" {
+  instance = aws_instance.gitlab_server.id
+  domain   = "vpc"
 }
