@@ -7,7 +7,7 @@ services:
       GITLAB_ROOT_EMAIL: "admin@nextgen.com"
       GITLAB_ROOT_PASSWORD: "testadmin"
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab.nextgen.com'
+        external_url 'http://gitlab.30062022.xyz'
         nginx['listen_port'] = 80
         gitlab_rails['ldap_enabled'] = true
         gitlab_rails['ldap_servers'] = {
