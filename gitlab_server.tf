@@ -95,6 +95,14 @@ resource "aws_vpc_security_group_egress_rule" "server_allow_dns_out" {
   to_port = 53
 }
 
+resource "aws_vpc_security_group_egress_rule" "server_allow_dns_udp_out" {
+  security_group_id = aws_security_group.gitlab_server_security.id
+  cidr_ipv4 = "0.0.0.0/0"
+  from_port = 53
+  ip_protocol = "udp"
+  to_port = 53
+}
+
 resource "aws_vpc_security_group_egress_rule" "server_allow_dns_tls_out" {
   security_group_id = aws_security_group.gitlab_server_security.id
   cidr_ipv4 = "0.0.0.0/0"
@@ -107,7 +115,7 @@ resource "aws_instance" "gitlab_server" {
   ami = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
 
-  private_ip = "10.0.0.30"
+  private_ip = "10.0.0.29"
   vpc_security_group_ids = [aws_security_group.gitlab_server_security.id]
   subnet_id = aws_subnet.clcom-subnet.id
 

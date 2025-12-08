@@ -23,6 +23,14 @@ resource "aws_vpc_security_group_ingress_rule" "pdns_allow_dns" {
   to_port = 53
 }
 
+resource "aws_vpc_security_group_ingress_rule" "pdns_allow_dns_udp" {
+  security_group_id = aws_security_group.primary_dns_security.id
+  cidr_ipv4 = "10.0.0.28/30"
+  from_port = 53
+  ip_protocol = "udp"
+  to_port = 53
+}
+
 resource "aws_vpc_security_group_ingress_rule" "pdns_allow_dns_tls" {
   security_group_id = aws_security_group.primary_dns_security.id
   cidr_ipv4 = "10.0.0.28/30"

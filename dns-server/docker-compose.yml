@@ -9,7 +9,7 @@ services:
       - "53:53/tcp"
       - "53:53/udp"
     volumes:
-      - '$BIND9_HOME/config:/etc/bind'
-      - '$BIND9_HOME/cache:/var/cache/bind'
-      - '$BIND9_HOME/records:/var/lib/bind'
+      - '/srv/bind9/config:/etc/bind'
+      - '/srv/bind9/cache:/var/cache/bind'
+      - '/srv/bind9/records:/var/lib/bind'
     restart: unless-stopped

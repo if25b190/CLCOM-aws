@@ -1,4 +1,21 @@
 // Datei: secondary/etc/bind/named.conf.local
+options {
+  directory "/var/cache/bind";
+
+  allow-query { trusted; };
+  recursion yes;
+  allow-recursion { trusted; };
+
+  forwarders {
+    1.1.1.1;
+    8.8.8.8;
+  };
+};
+
+acl "trusted" {
+  192.168.0.0/24;
+  10.0.0.0/24;
+};
 
 // Lokale Zone (Forward Lookup)
 zone "nextgen.com" IN {
