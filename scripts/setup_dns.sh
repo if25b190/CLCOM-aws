@@ -5,3 +5,5 @@ tee /etc/resolv.custom.conf <<EOF
 nameserver 10.0.0.254
 nameserver 10.0.0.253
 EOF
+
+systemctl restart systemd-resolved.service

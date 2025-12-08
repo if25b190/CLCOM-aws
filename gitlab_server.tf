@@ -119,6 +119,15 @@ resource "aws_instance" "gitlab_server" {
   vpc_security_group_ids = [aws_security_group.gitlab_server_security.id]
   subnet_id = aws_subnet.clcom-subnet.id
 
+  root_block_device {
+    volume_size = 30 # GB
+    volume_type = "gp3"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
   key_name = aws_key_pair.labuser.key_name
 
   tags = {
