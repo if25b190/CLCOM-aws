@@ -11,4 +11,6 @@ $TTL 604800
 @ IN NS ns2.nextgen.com.
 254 IN PTR ns1.nextgen.com.  ; .254 ist ns1
 253 IN PTR ns2.nextgen.com.  ; .253 ist ns2
-100 IN PTR host1.nextgen.com. ; .100 ist host1
+10 IN PTR ldap.nextgen.com. ; .10 ist OpenLDAP
+29 IN PTR gitlab.nextgen.com. ; .30 ist GitLab Server
+30 IN PTR runner.nextgen.com. ; .31 ist GitLab Runner

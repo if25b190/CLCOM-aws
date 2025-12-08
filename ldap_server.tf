@@ -15,10 +15,76 @@ resource "aws_vpc_security_group_ingress_rule" "ldap_allow_ssh" {
   to_port = 22
 }
 
-resource "aws_vpc_security_group_egress_rule" "ldap_allow_all_traffic_ipv4" {
+resource "aws_vpc_security_group_ingress_rule" "ldap_allow_ldap" {
+  security_group_id = aws_security_group.ldap_server_security.id
+  cidr_ipv4 = "10.0.0.29/32"
+  from_port = 389
+  ip_protocol = "tcp"
+  to_port = 389
+}
+
+resource "aws_vpc_security_group_ingress_rule" "ldap_allow_ldap_tls" {
+  security_group_id = aws_security_group.ldap_server_security.id
+  cidr_ipv4 = "10.0.0.29/32"
+  from_port = 636
+  ip_protocol = "tcp"
+  to_port = 636
+}
+
+resource "aws_vpc_security_group_egress_rule" "ldap_allow_ssh_out" {
   security_group_id = aws_security_group.ldap_server_security.id
   cidr_ipv4 = "0.0.0.0/0"
-  ip_protocol = "-1" # semantically equivalent to all ports
+  from_port = 22
+  ip_protocol = "tcp"
+  to_port = 22
+}
+
+resource "aws_vpc_security_group_egress_rule" "ldap_allow_http_out" {
+  security_group_id = aws_security_group.ldap_server_security.id
+  cidr_ipv4 = "0.0.0.0/0"
+  from_port = 80
+  ip_protocol = "tcp"
+  to_port = 80
+}
+
+resource "aws_vpc_security_group_egress_rule" "ldap_allow_https_out" {
+  security_group_id = aws_security_group.ldap_server_security.id
+  cidr_ipv4 = "0.0.0.0/0"
+  from_port = 443
+  ip_protocol = "tcp"
+  to_port = 443
+}
+
+resource "aws_vpc_security_group_egress_rule" "ldap_allow_ldap_out" {
+  security_group_id = aws_security_group.ldap_server_security.id
+  cidr_ipv4 = "0.0.0.0/0"
+  from_port = 389
+  ip_protocol = "tcp"
+  to_port = 389
+}
+
+resource "aws_vpc_security_group_egress_rule" "ldap_allow_ldap_tls_out" {
+  security_group_id = aws_security_group.ldap_server_security.id
+  cidr_ipv4 = "0.0.0.0/0"
+  from_port = 636
+  ip_protocol = "tcp"
+  to_port = 636
+}
+
+resource "aws_vpc_security_group_egress_rule" "ldap_allow_dns_out" {
+  security_group_id = aws_security_group.ldap_server_security.id
+  cidr_ipv4 = "0.0.0.0/0"
+  from_port = 53
+  ip_protocol = "tcp"
+  to_port = 53
+}
+
+resource "aws_vpc_security_group_egress_rule" "ldap_allow_dns_tls_out" {
+  security_group_id = aws_security_group.ldap_server_security.id
+  cidr_ipv4 = "0.0.0.0/0"
+  from_port = 853
+  ip_protocol = "tcp"
+  to_port = 853
 }
 
 resource "aws_instance" "ldap_server" {

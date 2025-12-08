@@ -2,12 +2,31 @@ services:
   gitlab:
     image: gitlab/gitlab-ce:18.4.5-ce.0
     container_name: gitlab
-    restart: always
-    hostname: 'gitlab.nextgen.com'
+    restart: unless-stopped
     environment:
+      GITLAB_ROOT_EMAIL: "admin@nextgen.com"
+      GITLAB_ROOT_PASSWORD: "testadmin"
       GITLAB_OMNIBUS_CONFIG: |
-        # Add any other gitlab.rb configuration here, each on its own line
-        external_url 'https://gitlab.nextgen.com'
+        external_url 'http://gitlab.nextgen.com'
+        nginx['listen_port'] = 80
+        gitlab_rails['ldap_enabled'] = true
+        gitlab_rails['ldap_servers'] = {
+          'main' => {
+            'label' => 'LDAP',
+            'host' => 'ldap.nextgen.com',
+            'port' => 636,
+            'uid' => 'gitadmin',
+            'bind_dn' => 'cn=gitadmin,dc=nextgen,dc=technikum-wien,dc=at',
+            'password' => 'gitadmin',
+            'encryption' => 'simple_tls',
+            'verify_certificates' => true,
+            'timeout' => 10,
+            'active_directory' => false,
+            'user_filter' => '',
+            'base' => 'dc=nextgen,dc=technikum-wien,dc=at',
+            'allow_username_or_email_login' => false,
+          }
+        }
     ports:
       - '80:80'
       - '443:443'
@@ -16,4 +35,3 @@ services:
       - '$GITLAB_HOME/config:/etc/gitlab'
       - '$GITLAB_HOME/logs:/var/log/gitlab'
       - '$GITLAB_HOME/data:/var/opt/gitlab'
-    shm_size: '256m'

@@ -3,6 +3,7 @@ services:
     image: osixia/openldap:1.5.0
     command: --copy-service --loglevel info
     container_name: ldap
+    restart: unless-stopped
     hostname: 'ldap.nextgen.com'
     environment:
       - LDAP_ORGANISATION="Nextgen"

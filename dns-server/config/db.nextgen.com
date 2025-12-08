@@ -11,4 +11,6 @@ $TTL 604800
 @ IN NS ns2.nextgen.com.
 ns1 IN A 10.0.0.254 ; Primary DNS IP
 ns2 IN A 10.0.0.253 ; Secondary DNS IP
-host1 IN A 10.0.0.100
+ldap IN A 10.0.0.10 ; OpenLDAP
+gitlab IN A 10.0.0.29 ; GitLab Server
+runner IN A 10.0.0.30 ; GitLab Runner

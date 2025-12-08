@@ -1,8 +1,9 @@
 services:
   gitlab-runner:
     image: gitlab/gitlab-runner:latest
-    restart: always
+    restart: unless-stopped
     hostname: gitlab-runner
+    network_mode: 'host'
     container_name: gitlab-runner
     volumes:
       #For config.toml
@@ -11,6 +12,6 @@ services:
       # Needed for docker executor
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - CI_SERVER_URL=https://gitlab.nextgen.com
+      - CI_SERVER_URL=http://gitlab.nextgen.com
       - DOCKER-IMAGE=ubuntu:latest
       - DOCKER_PRIVILEGE=true
