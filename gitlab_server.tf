@@ -113,7 +113,7 @@ resource "aws_vpc_security_group_egress_rule" "server_allow_dns_tls_out" {
 
 resource "aws_instance" "gitlab_server" {
   ami = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
+  instance_type = "t3.small"
 
   private_ip = "10.0.0.29"
   vpc_security_group_ids = [aws_security_group.gitlab_server_security.id]
