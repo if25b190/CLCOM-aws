@@ -11,3 +11,4 @@ cd $BIND9_HOME
 docker image pull ubuntu/bind9:latest
 systemctl stop systemd-resolved.service
 docker compose up -d
+systemctl start systemd-resolved.service
