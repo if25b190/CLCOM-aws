@@ -33,7 +33,7 @@ resource "aws_vpc_security_group_ingress_rule" "sdns_allow_https" {
 
 resource "aws_vpc_security_group_ingress_rule" "sdns_allow_dns" {
   security_group_id = aws_security_group.secondary_dns_security.id
-  cidr_ipv4 = "10.0.0.28/30"
+  cidr_ipv4 = "10.0.0.0/24"
   from_port = 53
   ip_protocol = "tcp"
   to_port = 53
@@ -41,32 +41,15 @@ resource "aws_vpc_security_group_ingress_rule" "sdns_allow_dns" {
 
 resource "aws_vpc_security_group_ingress_rule" "sdns_allow_dns_udp" {
   security_group_id = aws_security_group.secondary_dns_security.id
-  cidr_ipv4 = "10.0.0.28/30"
+  cidr_ipv4 = "10.0.0.0/24"
   from_port = 53
   ip_protocol = "udp"
   to_port = 53
 }
-
-// INTERNAL
-resource "aws_vpc_security_group_ingress_rule" "sdns_allow_dns_internal" {
-  security_group_id = aws_security_group.secondary_dns_security.id
-  cidr_ipv4 = "10.0.0.254/32"
-  from_port = 53
-  ip_protocol = "tcp"
-  to_port = 53
-}
-resource "aws_vpc_security_group_ingress_rule" "sdns_allow_dns_udp_internal" {
-  security_group_id = aws_security_group.secondary_dns_security.id
-  cidr_ipv4 = "10.0.0.254/32"
-  from_port = 53
-  ip_protocol = "udp"
-  to_port = 53
-}
-// INTERNAL
 
 resource "aws_vpc_security_group_ingress_rule" "sdns_allow_dns_tls" {
   security_group_id = aws_security_group.secondary_dns_security.id
-  cidr_ipv4 = "10.0.0.28/30"
+  cidr_ipv4 = "10.0.0.0/24"
   from_port = 853
   ip_protocol = "tcp"
   to_port = 853
