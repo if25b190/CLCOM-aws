@@ -9,6 +9,9 @@ curl https://raw.githubusercontent.com/if25b190/CLCOM-aws/refs/heads/main/dns-se
 curl https://raw.githubusercontent.com/if25b190/CLCOM-aws/refs/heads/main/dns-server/config/ns1_named.conf.local > $BIND9_HOME/config/named.conf
 cd $BIND9_HOME
 docker image pull ubuntu/bind9:latest
-systemctl stop systemd-resolved.service
+
+cp /etc/systemd/resolved.conf /etc/systemd/resolved.conf.bak
+echo 'DNSStubListener=no' | tee -a /etc/systemd/resolved.conf
+systemctl restart systemd-resolved.service
+
 docker compose up -d
-systemctl start systemd-resolved.service

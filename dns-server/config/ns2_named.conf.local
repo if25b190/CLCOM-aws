@@ -21,6 +21,7 @@ acl "trusted" {
 zone "nextgen.com" IN {
     type slave;
     masters { 10.0.0.254; }; // IP des Primary-Servers (ns1)
+    allow-notify { 10.0.0.254; };
     file "db.nextgen.com"; // Hier wird die Zone gespeichert
 };
 
@@ -28,5 +29,6 @@ zone "nextgen.com" IN {
 zone "0.0.10.in-addr.arpa" IN {
     type slave;
     masters { 10.0.0.254; };
+    allow-notify { 10.0.0.254; };
     file "db.10.0.0";
 };
