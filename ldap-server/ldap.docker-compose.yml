@@ -7,8 +7,8 @@ services:
     hostname: 'ldap.nextgen.com'
     environment:
       - LDAP_ORGANISATION="Nextgen"
-      - LDAP_DOMAIN=nextgen.technikum-wien.at
-      - LDAP_BASE_DN=dc=nextgen,dc=technikum-wien,dc=at
+      - LDAP_DOMAIN=nextgen.com
+      - LDAP_BASE_DN=dc=nextgen,dc=com
       - LDAP_READONLY_USER=true
       - LDAP_READONLY_USER_USERNAME=user
       - LDAP_READONLY_USER_PASSWORD=user
