@@ -1,6 +1,0 @@
-dn: cn=gitadmin,{{ LDAP_BASE_DN }}
-changetype: add
-cn: gitadmin
-objectClass: organizationalRole
-objectClass: simpleSecurityObject
-userPassword: gitadmin

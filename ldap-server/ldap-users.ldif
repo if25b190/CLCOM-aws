@@ -1,0 +1,42 @@
+dn: ou=users,{{ LDAP_BASE_DN }}
+changetype: add
+objectClass: organizationalUnit
+ou: users
+
+dn: cn=gituser,ou=users,{{ LDAP_BASE_DN }}
+changetype: add
+cn: gituser
+objectClass: inetOrgPerson
+objectClass: simpleSecurityObject
+sn: gituser
+uid: gituser
+mail: gituser@nextgen.com
+userPassword: gituser
+
+dn: cn=gitadmin,ou=users,{{ LDAP_BASE_DN }}
+changetype: add
+cn: gitadmin
+objectClass: inetOrgPerson
+objectClass: simpleSecurityObject
+sn: gitadmin
+uid: gitadmin
+mail: gitadmin@nextgen.com
+userPassword: gitadmin
+memberOf: cn=gitlab-admins,ou=groups,dc=nextgen,dc=com
+
+dn: cn=ldapuser,ou=users,{{ LDAP_BASE_DN }}
+changetype: add
+cn: ldapuser
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+userPassword: ldapuser
+description: LDAP read only user
+
+dn: olcDatabase={1}{{ LDAP_BACKEND }},cn=config
+changetype: modify
+delete: olcAccess
+-
+add: olcAccess
+olcAccess: to * by dn.exact=gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth manage by * break
+olcAccess: to attrs=userPassword,shadowLastChange by self write by dn="cn=admin,{{ LDAP_BASE_DN }}" write by anonymous auth by * none
+olcAccess: to * by self read by dn="cn=admin,{{ LDAP_BASE_DN }}" write by dn="cn=ldapuser,ou=users,{{ LDAP_BASE_DN }}" read by * none

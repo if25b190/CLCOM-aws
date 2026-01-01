@@ -1,0 +1,10 @@
+dn: ou=groups,{{ LDAP_BASE_DN }}
+changetype: add
+objectClass: organizationalUnit
+ou: groups
+
+dn: cn=gitlab-admins,ou=groups,{{ LDAP_BASE_DN }}
+changetype: add
+objectClass: groupOfNames
+description: Group for Gitlab Admins
+member: cn=gitadmin,ou=users,{{ LDAP_BASE_DN }}

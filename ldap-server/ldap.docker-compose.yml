@@ -1,7 +1,7 @@
 services:
   ldap:
     image: osixia/openldap:1.5.0
-    command: --copy-service --loglevel info
+    command: --copy-service --loglevel debug
     container_name: ldap
     restart: unless-stopped
     hostname: 'ldap.nextgen.com'
@@ -9,9 +9,6 @@ services:
       - LDAP_ORGANISATION="Nextgen"
       - LDAP_DOMAIN=nextgen.com
       - LDAP_BASE_DN=dc=nextgen,dc=com
-      - LDAP_READONLY_USER=true
-      - LDAP_READONLY_USER_USERNAME=user
-      - LDAP_READONLY_USER_PASSWORD=user
     ports:
       - '389:389'
       - '636:636'
@@ -21,4 +18,5 @@ services:
       # - /etc/ldap/slapd.d
       # TODO Custom TLS-Cert?
       # - /container/service/slapd/assets/certs/
-      - ./gitlab-admin.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-gitlab-admin.ldif
+      - ./ldap-users.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-ldap-users.ldif
+      - ./ldap-groups.ldif:/container/service/slapd/assets/config/bootstrap/ldif/51-ldap-groups.ldif

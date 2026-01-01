@@ -13,7 +13,7 @@ services:
         gitlab_rails['ldap_servers'] = {
           'main' => {
             'label' => 'LDAP',
-            'host' => 'ldap.nextgen.com',
+            'host' => 'ldap',
             'port' => 389,
             'uid' => 'uid',
             'method' => 'plain',
@@ -35,3 +35,24 @@ services:
       - '/srv/gitlab/config:/etc/gitlab'
       - '/srv/gitlab/logs:/var/log/gitlab'
       - '/srv/gitlab/data:/var/opt/gitlab'
+  ldap:
+    image: osixia/openldap:1.5.0
+    command: --copy-service --loglevel debug
+    container_name: ldap
+    restart: unless-stopped
+    hostname: 'ldap.nextgen.com'
+    environment:
+      - LDAP_ORGANISATION="Nextgen"
+      - LDAP_DOMAIN=nextgen.com
+      - LDAP_BASE_DN=dc=nextgen,dc=com
+    ports:
+      - '389:389'
+      - '636:636'
+    volumes:
+      # TODO diese zu Paths auf dem Server mappen?
+      # - /var/lib/ldap
+      # - /etc/ldap/slapd.d
+      # TODO Custom TLS-Cert?
+      # - /container/service/slapd/assets/certs/
+      - ./ldap-users.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-ldap-users.ldif
+      - ./ldap-groups.ldif:/container/service/slapd/assets/config/bootstrap/ldif/51-ldap-groups.ldif
