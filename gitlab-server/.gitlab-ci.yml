@@ -1,0 +1,82 @@
+default:
+  image: node:14-alpine
+
+variables:
+  # Common
+  MY_CI_REGISTRY: $CI_REGISTRY
+  MY_CI_REGISTRY_USER: $CI_REGISTRY_USER
+  MY_CI_REGISTRY_TOKEN: $CI_REGISTRY_TOKEN
+  MY_CI_REGISTRY_IMAGE: $CI_REGISTRY_IMAGE
+
+stages:
+  - build
+  - lint
+  - test
+  - deploy
+
+before_script:
+  - npm install
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+build:
+  stage: build
+  script:
+    - echo "Build App"
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+
+lint:
+  stage: lint
+  script:
+    - echo "Lint App"
+    - npm run lint
+    
+test:
+  stage: test
+  script:
+    - echo "Test App"
+    - npm run test
+
+deploy-dev:
+  stage: deploy
+  image: docker
+  services:
+    - name: docker:dind
+      alias: docker
+      command: ["--tls=false"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - docker login -u "$MY_CI_REGISTRY_USER" -p "$MY_CI_REGISTRY_TOKEN" "$MY_CI_REGISTRY"
+  script:
+    - docker build --pull -t "$MY_CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+    - docker push "$MY_CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  only:
+    - developement
+
+deploy-prod:
+  stage: deploy
+  image: docker
+  services:
+    - name: docker:dind
+      alias: docker
+      command: ["--tls=false"]
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_DRIVER: overlay2
+  before_script:
+    - docker login -u "$MY_CI_REGISTRY_USER" -p "$MY_CI_REGISTRY_TOKEN" "$MY_CI_REGISTRY"
+  script:
+    - docker build --pull -t "$MY_CI_REGISTRY_IMAGE:latest" .
+    - docker push "$MY_CI_REGISTRY_IMAGE:latest"
+  only:
+    - main
